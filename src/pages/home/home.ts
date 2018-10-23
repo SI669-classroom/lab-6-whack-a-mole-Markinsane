@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { MoleHole } from '../../models/button-model';
 import { Observable } from 'rxjs/Observable';
 
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
