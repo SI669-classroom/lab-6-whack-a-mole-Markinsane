@@ -17,9 +17,9 @@
 <h1>You score is {{score}}</h1>
 <h2>Leaderboard</h2>
 <p>Something's wrong with the date :(</p>
-<ion-item *ngFor="let score of scoreList">
+<ion-item *ngFor="let x of scoreList">
   <!-- This is supposed to convert date into human readable format -->
   <!-- But it isn't working, what's wrong -->
-  <span>{{score.score}}</span> : <span>{{score.score | date : 'long'}}</span>
+  <span>{{x.score}}</span> : <span>{{ x.time }}</span>
 </ion-item>
 </ion-content>

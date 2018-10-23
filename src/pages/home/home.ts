@@ -15,8 +15,8 @@ export class HomePage {
   gameTimer: any;
   timeLeft: number = 0;
   timerObserver: any;
-  score: 0;
-
+  score: number = 0;
+  scoreObserver:any
 
   constructor(public navCtrl: NavController) {
 
@@ -24,13 +24,30 @@ export class HomePage {
      * Create an observer to be passed to the new MoleHoles
      */
 
+     let scoreUpdate = Observable.create(observer => {
+      this.scoreObserver = observer;
+    });
+   
+    
+
     /**
      * Subscribe to the observer created above to update the score
      */
 
+     scoreUpdate.subscribe(val => {
+     
+  
+       this.score= this.score+val
+      
+     })
+
+
     for(let i = 0; i<9; i++) {
-      this.moleHoles.push(new MoleHole(i, /*Pass the observer created to the new MoleHoles*/))
+      this.moleHoles.push(new MoleHole(i, this.scoreObserver/*Pass the observer created to the new MoleHoles*/))
     }
+
+
+
 
     let timerUpdate = Observable.create(observer => {
       this.timerObserver = observer;
@@ -41,11 +58,19 @@ export class HomePage {
     })
 
     this.startGame()
+    this.updateSubscribers()
   }
 
 
+  updateSubscribers() {
+
+          if (this.scoreObserver) {
+            this.scoreObserver.next(1);
+          }
+        }
 
   startGame(){
+   
     const that = this;
     this.score = 0;
 
@@ -62,6 +87,7 @@ export class HomePage {
       if(that.timeLeft <= 0) {
         clearInterval(that.gameTimer);
         this.stopGame();
+         console.log(this.score)
         this.saveScore();
       }
     }, 1000)
@@ -77,6 +103,7 @@ export class HomePage {
   saveScore() {
     //This is the old ionic 3.9 syntax, get rid of it.
     //use ionic 4; use Angular routing across the project.
+     // this.router.navigateByUrl('/About');
     this.navCtrl.push('LeaderboardPage', {
       score: this.score
     })
@@ -90,7 +117,10 @@ export class HomePage {
   hit(hole: MoleHole) {
     const success = hole.hit();
     if(success) {
+      // console.log("this.score")
       this.showHitMessage = true;
+      // this.score = this.score + 1
+      console.log(this.score)
       setTimeout(() => {
         this.showHitMessage = false;
       }, 300);
@@ -103,7 +133,34 @@ export class HomePage {
        * What should this function do?
        * Hint: Look in the home.scss file
        */
-    }
+
+        case 0:
+         return "hid";
+          break;
+        case 1:
+          return "out";
+          break;
+        case 2:
+         return "hit";
+          break;
+
+        // default:
+        //   alert( "I don't know such values" );
+          }
 }
 
 }
+
+
+
+// extra credit question 
+
+// How did observables simplify the code?
+// It could be called many times compared to promise where it could only be called once 
+
+// What was the most difficult aspect of this lab exercise?
+// Understand how data flow through Observable and observer and consumer 
+
+// Can you suggest some changes to make the code more readable or simple?
+// Actually we need a proper lad section for this course
+
