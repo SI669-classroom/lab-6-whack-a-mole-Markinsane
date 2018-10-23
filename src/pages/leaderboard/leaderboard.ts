@@ -60,7 +60,7 @@ export class LeaderboardPage {
           }
         })
 
-        this.storage.set('leaderboard', "");
+        this.storage.set('leaderboard', JSON.stringify(res));
          console.log("result")
       })
     })
