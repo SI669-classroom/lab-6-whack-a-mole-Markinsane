@@ -145,8 +145,7 @@ export class HomePage {
          return "hit";
           break;
 
-        // default:
-        //   alert( "I don't know such values" );
+     
           }
 }
 
